@@ -63,6 +63,42 @@ defmodule Ramblings.Generator do
   end
 
   @doc """
+  Gets a single prompt (public access - returns nil if not found).
+
+  ## Examples
+
+      iex> get_prompt(id, scope)
+      %Prompt{}
+
+      iex> get_prompt(id, scope)
+      nil
+
+  """
+  def get_prompt(id, %Scope{} = scope) do
+    Repo.get_by(Prompt, id: id, user_id: scope.user.id)
+  end
+
+  def get_prompt(id, _scope) do
+    Repo.get(Prompt, id)
+  end
+
+  @doc """
+  Returns a list of recent prompts (for public explore page).
+
+  ## Examples
+
+      iex> list_recent_prompts(10)
+      [%Prompt{}, ...]
+
+  """
+  def list_recent_prompts(limit \\ 20) do
+    Prompt
+    |> order_by([p], desc: p.inserted_at)
+    |> limit(^limit)
+    |> Repo.all()
+  end
+
+  @doc """
   Creates a prompt.
 
   ## Examples

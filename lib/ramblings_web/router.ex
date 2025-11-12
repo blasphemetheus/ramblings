@@ -20,7 +20,12 @@ defmodule RamblingsWeb.Router do
   scope "/", RamblingsWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live_session :public,
+      on_mount: [{RamblingsWeb.UserAuth, :mount_current_scope}] do
+      live "/", HomepageLive, :index
+      live "/explore", ExploreLive, :index
+      live "/sites/:id", SiteLive.Show, :show
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -47,6 +52,8 @@ defmodule RamblingsWeb.Router do
       on_mount: [{RamblingsWeb.UserAuth, :require_authenticated}] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
+
+      live "/my-sites", MySitesLive, :index
 
       live "/prompts", PromptLive.Index, :index
       live "/prompts/new", PromptLive.Form, :new

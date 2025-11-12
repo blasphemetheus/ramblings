@@ -1,8 +1,11 @@
 defmodule RamblingsWeb.PageControllerTest do
   use RamblingsWeb.ConnCase
 
+  import Phoenix.LiveViewTest
+
   test "GET /", %{conn: conn} do
-    conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Peace of mind from prototype to production"
+    {:ok, _view, html} = live(conn, ~p"/")
+    assert html =~ "ramblings.cc"
+    assert html =~ "Describe a website. Watch it come to life."
   end
 end
