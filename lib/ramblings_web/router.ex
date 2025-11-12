@@ -47,6 +47,11 @@ defmodule RamblingsWeb.Router do
       on_mount: [{RamblingsWeb.UserAuth, :require_authenticated}] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
+
+      live "/prompts", PromptLive.Index, :index
+      live "/prompts/new", PromptLive.Form, :new
+      live "/prompts/:id/edit", PromptLive.Form, :edit
+      live "/prompts/:id", PromptLive.Show, :show
     end
 
     post "/users/update-password", UserSessionController, :update_password
